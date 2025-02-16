@@ -37,13 +37,13 @@ This is a Spring Boot-based REST API for a job posting platform. It allows compa
   "data": {
     "id": 1,
     "title": "Software Engineer",
-    "company": "Meta Inc.",
+    "company": "Dialog Axiata Labs",
     "description": "We are looking for a skilled Java developer to join our team.",
-    "location": "New York, USA",
-    "salary": 75000.0,
-    "createdAt": "2024-01-23T10:30:00Z"
+    "location": "Colombo, Sri Lanka",
+    "salary": 175000.0,
+    "createdAt": "2025-02-15T10:30:00Z"
   },
-  "timestamp": "2024-01-23T12:00:00Z"
+  "timestamp": "2025-02-16T10:00:00Z"
 }
 ```
 
@@ -53,7 +53,7 @@ This is a Spring Boot-based REST API for a job posting platform. It allows compa
   "status": "failed",
   "message": "Job with ID 99 not found",
   "data": null,
-  "timestamp": "2024-01-23T12:00:00Z"
+  "timestamp": "2025-02-16T11:00:00Z"
 }
 ```
 
@@ -73,10 +73,12 @@ This is a Spring Boot-based REST API for a job posting platform. It allows compa
 
 2. Configure the database in `src/main/resources/application.properties`:
    ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5432/jobdb
-   spring.datasource.username=your_username
-   spring.datasource.password=your_password
-   spring.jpa.hibernate.ddl-auto=update
+   spring.datasource.url=jdbc:postgresql://localhost:5432/jobdemo
+   spring.datasource.username=gajanan
+   spring.datasource.password=root
+   spring.jpa.hibernate.ddl-auto=create-drop
+   spring.jpa.show-sql=true
+   spring.jpa.database= postgresql
    ```
 
 3. Build and run the application:
@@ -87,7 +89,7 @@ This is a Spring Boot-based REST API for a job posting platform. It allows compa
 
 4. Access the API at `http://localhost:8080`
 
-5. (Optional) Access the H2 Console (if enabled) at `http://localhost:8080/h2-console`
+5.  Access the Swagger Configuration at `http://localhost:8080/swagger-ui/index.html`
 
 ## Exception Handling
 - **JobNotFoundException** → Returns a `404 Not Found` response
@@ -99,7 +101,6 @@ This is a Spring Boot-based REST API for a job posting platform. It allows compa
 - Errors and exceptions are logged with stack traces for easier debugging
 
 ## Future Enhancements
-- Add Swagger documentation
 - Implement authentication & authorization (JWT-based)
 - Improve pagination and filtering options
 
