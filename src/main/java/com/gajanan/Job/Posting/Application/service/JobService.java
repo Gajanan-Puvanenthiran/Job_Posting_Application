@@ -6,7 +6,7 @@ import com.gajanan.Job.Posting.Application.model.entity.Job;
 
 import java.util.List;
 
-public interface JobService {
+public interface JobService {  // provides only method signatures for CRUD operations
     Job createJob(RequestDTO requestDTO);
 
     List<Job> getAllJobs();

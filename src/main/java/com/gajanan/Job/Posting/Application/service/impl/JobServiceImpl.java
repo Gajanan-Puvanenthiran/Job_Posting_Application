@@ -1,5 +1,6 @@
 package com.gajanan.Job.Posting.Application.service.impl;
 
+import com.gajanan.Job.Posting.Application.config.aspect.NoLogging;
 import com.gajanan.Job.Posting.Application.exception.JobNotFoundException;
 
 import com.gajanan.Job.Posting.Application.mapper.RequestDTOConverter;
@@ -8,6 +9,9 @@ import com.gajanan.Job.Posting.Application.model.entity.Job;
 import com.gajanan.Job.Posting.Application.repository.JobRepository;
 import com.gajanan.Job.Posting.Application.service.JobService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,16 +29,19 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    @NoLogging
     public List<Job> getAllJobs() {
         return jobRepository.findAll();
     }
 
     @Override
+    @Cacheable(value = "job", key = "#id")
     public Job getJob(Long id) {
         return jobRepository.findById(id).orElseThrow(() -> new JobNotFoundException("Job with id " + id + " not found"));
     }
 
     @Override
+    @CachePut(value = "job", key = "#id")
     public Job updateJob(Long id, RequestDTO requestDTO) {
         Job toUpdatableJob = jobRepository.findById(id).orElseThrow(() -> new JobNotFoundException("Job with id " + id + " not found"));
         RequestDTOConverter.convertDTOtoJob(requestDTO, toUpdatableJob);
@@ -42,6 +49,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    @CacheEvict(value = "job", key = "#id")
     public Job deleteJob(Long id) {
         Job toDeletableJob = jobRepository.findById(id).orElseThrow(() -> new JobNotFoundException("Job with id " + id + " not found"));
         jobRepository.delete(toDeletableJob);

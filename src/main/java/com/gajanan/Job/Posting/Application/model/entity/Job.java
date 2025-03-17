@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -15,7 +16,9 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-public class Job {
+public class Job implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

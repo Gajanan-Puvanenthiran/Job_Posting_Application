@@ -1,43 +1,45 @@
 package com.gajanan.Job.Posting.Application.controller;
 
 
-import com.gajanan.Job.Posting.Application.config.aspect.NoLogging;
 import com.gajanan.Job.Posting.Application.model.dto.RequestDTO;
 import com.gajanan.Job.Posting.Application.model.dto.ResponseDTO;
 import com.gajanan.Job.Posting.Application.model.entity.Job;
-import com.gajanan.Job.Posting.Application.service.CacheInspectionService;
 import com.gajanan.Job.Posting.Application.service.JobService;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/jobs")
+@RequestMapping("/demo/jobs")
 @Tag(name = "Job Controller", description = "Endpoints for managing Jobs")
 @Slf4j
-@Validated
 @RequiredArgsConstructor
-public class JobController {
+public class DemoController {
 
     private final JobService jobService;
-    private final CacheInspectionService cacheInspectionService;
 
     @Operation(
             description = "POST endpoint for Job"
     )
     @PostMapping
     public ResponseEntity<ResponseDTO> createJob(@Valid @RequestBody RequestDTO requestDTO) {
-
+        log.info("Job Creation invoked with parameters: {}", requestDTO);
         Job createdJob = jobService.createJob(requestDTO);
+        log.info("Job Creation successful: {}", createdJob);
         return new ResponseEntity<>(new ResponseDTO(
                 "Success",
                 "Job Created Successfully",
@@ -49,16 +51,17 @@ public class JobController {
             description = "GET endpoint for all Jobs"
     )
     @GetMapping
-    @NoLogging
     public ResponseEntity<ResponseDTO> getAllJobs() {
-
+        log.info("All Jobs Retrieving method invoked");
         List<Job> allJobs = jobService.getAllJobs();
         if(allJobs.isEmpty()) {
+            log.info("No Jobs in Portal");
             return new ResponseEntity<>(new ResponseDTO(
                     "No Jobs Available",
                     "Currently, there are no job postings available. Please check back later."
             ),HttpStatus.OK);
         }else{
+            log.info("All Jobs Retrieved successfully");
             return new ResponseEntity<>(new ResponseDTO(
                     "Success",
                     "Jobs Retrieved Successfully",
@@ -72,7 +75,9 @@ public class JobController {
     )
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDTO> getJob(@PathVariable Long id) {
+        log.info("Job Retrieving method invoked with parameters: {}", id);
         Job job = jobService.getJob(id);
+        log.info("Job Retrieved successfully: {}", job);
         return new ResponseEntity<>(new ResponseDTO(
                 "Success",
                 "Job Retrieved Successfully",
@@ -85,7 +90,9 @@ public class JobController {
     )
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDTO> updateJob(@PathVariable Long id, @Valid @RequestBody RequestDTO requestDTO) {
+        log.info("Job Updating for {} invoked with parameters: {}", id, requestDTO);
         Job updatedJob = jobService.updateJob(id, requestDTO);
+        log.info("Job Updating successful: {}", updatedJob);
         return new ResponseEntity<>(new ResponseDTO(
                 "Success",
                 "Job Updated Successfully",
@@ -98,17 +105,14 @@ public class JobController {
     )
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDTO> deleteJob(@PathVariable Long id) {
+        log.info("Job Deleting for {} invoked with parameters: {}", id, id);
         Job deletedJob = jobService.deleteJob(id);
+        log.info("Job Deleting successful: {}", deletedJob);
         return new ResponseEntity<>(new ResponseDTO(
                 "Success",
                 "Job Deleted Successfully",
                 deletedJob
         ), HttpStatus.OK);
-    }
-
-    @GetMapping("/cacheData")
-    public void getCacheData(){
-        cacheInspectionService.printCacheContent("job");
     }
 
 }
