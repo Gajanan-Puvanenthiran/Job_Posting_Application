@@ -4,22 +4,16 @@ package com.gajanan.Job.Posting.Application.controller;
 import com.gajanan.Job.Posting.Application.config.aspect.NoLogging;
 import com.gajanan.Job.Posting.Application.model.dto.RequestDTO;
 import com.gajanan.Job.Posting.Application.model.dto.ResponseDTO;
-import com.gajanan.Job.Posting.Application.model.entity.Job;
 import com.gajanan.Job.Posting.Application.service.CacheInspectionService;
 import com.gajanan.Job.Posting.Application.service.JobService;
-
-import com.gajanan.Job.Posting.Application.util.Util;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/jobs")

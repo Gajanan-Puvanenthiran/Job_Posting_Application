@@ -2,7 +2,6 @@ package com.gajanan.Job.Posting.Application.service.impl;
 
 import com.gajanan.Job.Posting.Application.config.aspect.NoLogging;
 import com.gajanan.Job.Posting.Application.exception.JobNotFoundException;
-
 import com.gajanan.Job.Posting.Application.mapper.RequestDTOConverter;
 import com.gajanan.Job.Posting.Application.model.dto.RequestDTO;
 import com.gajanan.Job.Posting.Application.model.dto.ResponseDTO;
@@ -36,7 +35,7 @@ public class JobServiceImpl implements JobService {
     public ResponseDTO getAllJobs() {
         List<Job> allJobs = jobRepository.findAll();
         if (allJobs.isEmpty()) {
-            return new ResponseDTO(Util.STATUS_SUCCESS,Util.JOB_NOT_FOUND_EXCEPTION_MSG, Collections.emptyList());
+            return new ResponseDTO(Util.STATUS_FAILED,Util.NO_JOBS_IN_PORTAL_MSG, Collections.emptyList());
         }
         return new ResponseDTO(Util.STATUS_SUCCESS,Util.JOB_RETRIEVED, allJobs);
 
@@ -76,8 +75,8 @@ public class JobServiceImpl implements JobService {
     @NoLogging
     public ResponseDTO getJobsByTitle(String title) {
         List<Job> jobsByTitle = jobRepository.findJobsByTitle(title);
-        if (jobsByTitle.isEmpty()) {
-            return new ResponseDTO(Util.STATUS_SUCCESS,Util.JOB_NOT_FOUND_EXCEPTION_MSG, Collections.emptyList());
+        if (jobsByTitle==null || jobsByTitle.isEmpty()) {
+            return new ResponseDTO(Util.STATUS_FAILED,Util.NO_JOBS_IN_PORTAL_MSG, null);
         }
         return new ResponseDTO(Util.STATUS_SUCCESS,Util.JOB_RETRIEVED, jobsByTitle);
     }
@@ -87,7 +86,7 @@ public class JobServiceImpl implements JobService {
     public ResponseDTO getJobsByCompany(String company) {
        List<Job> jobsByCompany = jobRepository.findJobsByCompany(company);
        if (jobsByCompany.isEmpty()) {
-           return new ResponseDTO(Util.STATUS_SUCCESS,Util.JOB_NOT_FOUND_EXCEPTION_MSG, Collections.emptyList());
+           return new ResponseDTO(Util.STATUS_FAILED,Util.NO_JOBS_IN_PORTAL_MSG, null);
        }
        return new ResponseDTO(Util.STATUS_SUCCESS,Util.JOB_RETRIEVED, jobsByCompany);
     }
@@ -97,7 +96,7 @@ public class JobServiceImpl implements JobService {
     public ResponseDTO getJobsByLocation(String location) {
         List<Job> jobsByLocation = jobRepository.findJobsByLocation(location);
         if (jobsByLocation.isEmpty()) {
-            return new ResponseDTO(Util.STATUS_SUCCESS,Util.JOB_NOT_FOUND_EXCEPTION_MSG, Collections.emptyList());
+            return new ResponseDTO(Util.STATUS_FAILED,Util.NO_JOBS_IN_PORTAL_MSG, null);
         }
         return new ResponseDTO(Util.STATUS_SUCCESS,Util.JOB_RETRIEVED, jobsByLocation);
     }
@@ -107,7 +106,7 @@ public class JobServiceImpl implements JobService {
     public ResponseDTO getJobsByCompanyAndTitle(String company, String title) {
         List<Job> jobsByCompanyAndTitle = jobRepository.findJobsByCompanyAndTitle(company, title);
         if (jobsByCompanyAndTitle.isEmpty()) {
-            return new ResponseDTO(Util.STATUS_SUCCESS,Util.JOB_NOT_FOUND_EXCEPTION_MSG, Collections.emptyList());
+            return new ResponseDTO(Util.STATUS_FAILED,Util.NO_JOBS_IN_PORTAL_MSG, null);
         }
         return new ResponseDTO(Util.STATUS_SUCCESS,Util.JOB_RETRIEVED, jobsByCompanyAndTitle);
     }
