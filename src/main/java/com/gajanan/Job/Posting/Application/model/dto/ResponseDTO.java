@@ -16,10 +16,6 @@ public class ResponseDTO {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
     private Date timestamp = new Date(); //The time when the response was generated.
 
-    public ResponseDTO(String status, String message) {
-        this.status = status;
-        this.message = message;
-    }
 
     public ResponseDTO(String status, String message, Object data) {
         this.status = status;

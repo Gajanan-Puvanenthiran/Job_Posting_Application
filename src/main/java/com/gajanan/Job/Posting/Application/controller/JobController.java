@@ -4,21 +4,16 @@ package com.gajanan.Job.Posting.Application.controller;
 import com.gajanan.Job.Posting.Application.config.aspect.NoLogging;
 import com.gajanan.Job.Posting.Application.model.dto.RequestDTO;
 import com.gajanan.Job.Posting.Application.model.dto.ResponseDTO;
-import com.gajanan.Job.Posting.Application.model.entity.Job;
 import com.gajanan.Job.Posting.Application.service.CacheInspectionService;
 import com.gajanan.Job.Posting.Application.service.JobService;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/jobs")
@@ -36,13 +31,8 @@ public class JobController {
     )
     @PostMapping
     public ResponseEntity<ResponseDTO> createJob(@Valid @RequestBody RequestDTO requestDTO) {
-
-        Job createdJob = jobService.createJob(requestDTO);
-        return new ResponseEntity<>(new ResponseDTO(
-                "Success",
-                "Job Created Successfully",
-                createdJob
-        ), HttpStatus.CREATED);
+        ResponseDTO responseDTO=jobService.createJob(requestDTO);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @Operation(
@@ -51,33 +41,57 @@ public class JobController {
     @GetMapping
     @NoLogging
     public ResponseEntity<ResponseDTO> getAllJobs() {
-
-        List<Job> allJobs = jobService.getAllJobs();
-        if(allJobs.isEmpty()) {
-            return new ResponseEntity<>(new ResponseDTO(
-                    "No Jobs Available",
-                    "Currently, there are no job postings available. Please check back later."
-            ),HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(new ResponseDTO(
-                    "Success",
-                    "Jobs Retrieved Successfully",
-                    allJobs
-            ), HttpStatus.OK);
-        }
+        ResponseDTO responseDTO=jobService.getAllJobs();
+        return ResponseEntity.ok(responseDTO);
     }
 
     @Operation(
-            description = "GET endpoint for Job based on it's ID"
+            description = "GET endpoint for Job based on job's ID"
     )
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDTO> getJob(@PathVariable Long id) {
-        Job job = jobService.getJob(id);
-        return new ResponseEntity<>(new ResponseDTO(
-                "Success",
-                "Job Retrieved Successfully",
-                job
-        ), HttpStatus.OK);
+        ResponseDTO responseDTO=jobService.getJob(id);
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @Operation(
+            description = "GET endpoint for Job based on Job Title"
+    )
+    @GetMapping("/title/{title}")
+    @NoLogging
+    public ResponseEntity<ResponseDTO> getJobsByTitle(@PathVariable String title) {
+        ResponseDTO responseDTO=jobService.getJobsByTitle(title);
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @Operation(
+            description = "GET endpoint for Job based on Company"
+    )
+    @GetMapping("/company/{company}")
+    @NoLogging
+    public ResponseEntity<ResponseDTO> getJobsByCompany(@PathVariable String company) {
+        ResponseDTO responseDTO=jobService.getJobsByCompany(company);
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @Operation(
+            description = "GET endpoint for Job based on Location"
+    )
+    @GetMapping("/location/{location}")
+    @NoLogging
+    public ResponseEntity<ResponseDTO> getJobsByLocation(@PathVariable String location) {
+        ResponseDTO responseDTO=jobService.getJobsByLocation(location);
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @Operation(
+            description = "GET endpoint for Job based on Company and Title"
+    )
+    @GetMapping("/title/{title}/company/{company}")
+    @NoLogging
+    public ResponseEntity<ResponseDTO> getJobsByCompanyAndTitle(@PathVariable String company,@PathVariable String title) {
+        ResponseDTO responseDTO=jobService.getJobsByCompanyAndTitle(company, title);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @Operation(
@@ -85,12 +99,8 @@ public class JobController {
     )
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDTO> updateJob(@PathVariable Long id, @Valid @RequestBody RequestDTO requestDTO) {
-        Job updatedJob = jobService.updateJob(id, requestDTO);
-        return new ResponseEntity<>(new ResponseDTO(
-                "Success",
-                "Job Updated Successfully",
-                updatedJob
-        ), HttpStatus.OK);
+        ResponseDTO responseDTO=jobService.updateJob(id, requestDTO);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @Operation(
@@ -98,12 +108,8 @@ public class JobController {
     )
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDTO> deleteJob(@PathVariable Long id) {
-        Job deletedJob = jobService.deleteJob(id);
-        return new ResponseEntity<>(new ResponseDTO(
-                "Success",
-                "Job Deleted Successfully",
-                deletedJob
-        ), HttpStatus.OK);
+        ResponseDTO responseDTO=jobService.deleteJob(id);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @GetMapping("/cacheData")
